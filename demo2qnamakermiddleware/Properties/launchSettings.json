@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:50971/",
-      "sslPort": 44394
+      "applicationUrl": "http://localhost:49840/",
+      "sslPort": 44376
     }
   },
   "profiles": {
@@ -14,13 +14,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "demo2": {
+    "demo2qnamakermiddleware": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:50972/"
+      "applicationUrl": "http://localhost:49841/"
     }
   }
 }

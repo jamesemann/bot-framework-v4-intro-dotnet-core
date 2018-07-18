@@ -1,5 +1,5 @@
-﻿using demo2.Bots;
-using demo2.Middleware;
+﻿using demo3mysimplemiddleware.Bots;
+using demo3mysimplemiddleware.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder.BotFramework;
@@ -33,10 +33,11 @@ public class Startup
         services.AddBot<SimpleBot>(options =>
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
+
             options.Middleware.Add(new SimpleMiddleware());
         });
 
-        
+
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
