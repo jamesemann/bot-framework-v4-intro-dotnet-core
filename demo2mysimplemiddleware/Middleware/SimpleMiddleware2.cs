@@ -23,7 +23,7 @@ namespace demo2mysimplemiddleware.Middleware
                 await next();
             }
 
-            await context.SendActivity($"[SimpleMiddleware1] {context.Activity.Type}/OnTurn/After");
+            await context.SendActivity($"[SimpleMiddleware2] {context.Activity.Type}/OnTurn/After");
         }
     }
 }
