@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo2qnamakermiddleware", "demo2qnamakermiddleware.csproj", "{915FE6CD-F3FA-471B-BD87-B64C38449A4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo3qnamakermiddleware", "demo3qnamakermiddleware.csproj", "{915FE6CD-F3FA-471B-BD87-B64C38449A4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

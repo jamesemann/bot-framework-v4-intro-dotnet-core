@@ -1,4 +1,4 @@
-﻿using demo2qnamakermiddleware.Bots;
+﻿using demo3qnamakermiddleware.Bots;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder.Ai.QnA;

@@ -14,7 +14,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "demo2qnamakermiddleware": {
+    "demo3qnamakermiddleware": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

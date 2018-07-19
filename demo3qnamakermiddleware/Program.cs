@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace demo2qnamakermiddleware
+namespace demo3qnamakermiddleware
 {
     public class Program
     {
