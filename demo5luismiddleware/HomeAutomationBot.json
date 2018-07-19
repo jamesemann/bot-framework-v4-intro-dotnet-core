@@ -1,0 +1,215 @@
+{
+  "luis_schema_version": "3.0.0",
+  "versionId": "0.1",
+  "name": "HomeAutomationBot",
+  "desc": "",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "adjustlights"
+    },
+    {
+      "name": "adjusttemperature"
+    },
+    {
+      "name": "None"
+    }
+  ],
+  "entities": [],
+  "composites": [],
+  "closedLists": [
+    {
+      "name": "onoroff",
+      "subLists": [
+        {
+          "canonicalForm": "on",
+          "list": []
+        },
+        {
+          "canonicalForm": "off",
+          "list": [
+            "out"
+          ]
+        }
+      ],
+      "roles": []
+    },
+    {
+      "name": "Room",
+      "subLists": [
+        {
+          "canonicalForm": "kitchen",
+          "list": []
+        },
+        {
+          "canonicalForm": "bathroom",
+          "list": [
+            "toilet"
+          ]
+        },
+        {
+          "canonicalForm": "bedroom",
+          "list": []
+        },
+        {
+          "canonicalForm": "living room",
+          "list": [
+            "lounge"
+          ]
+        },
+        {
+          "canonicalForm": "dining room",
+          "list": []
+        },
+        {
+          "canonicalForm": "office",
+          "list": []
+        },
+        {
+          "canonicalForm": "garage",
+          "list": []
+        },
+        {
+          "canonicalForm": "study",
+          "list": [
+            "living room"
+          ]
+        }
+      ],
+      "roles": []
+    }
+  ],
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "prebuiltEntities": [
+    {
+      "name": "temperature",
+      "roles": []
+    }
+  ],
+  "model_features": [],
+  "regex_features": [],
+  "patterns": [],
+  "utterances": [
+    {
+      "text": "cool down the kitchen",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "heat up the bathroom",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "in the kitchen set the temperature to 30 degrees",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "kitchen lights off",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "kitchen to 30 degrees",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "lights in kitchen off",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "lower the temperature in the kitchen",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "set kitchen to 30 degrees c",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "set temperature in kitchen to 30 degrees",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "set the kitchen to 21 degrees",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "set the lights off in the kitchen",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "switch lights off in bathroom",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "switch off the lights in the kitchen",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "switch out the lights",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "the bathroom is too cold",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "the kitchen is too hot",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "turn on the lights in the kitchen",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "turn out the lights",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "turn the kitchen lights on",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "turn the lights on",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "turn the lights on in the kitchen",
+      "intent": "adjustlights",
+      "entities": []
+    },
+    {
+      "text": "turn up the kitchen a few degrees",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "turn up the kitchen to 21 degrees",
+      "intent": "adjusttemperature",
+      "entities": []
+    },
+    {
+      "text": "turn up the temperature in the kitchen",
+      "intent": "adjusttemperature",
+      "entities": []
+    }
+  ]
+}
