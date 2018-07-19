@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
 using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Schema;
 using Microsoft.Rest;
 using System;

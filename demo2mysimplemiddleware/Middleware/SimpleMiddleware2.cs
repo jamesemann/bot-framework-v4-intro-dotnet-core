@@ -5,15 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace demo3mysimplemiddleware.Middleware
+namespace demo2mysimplemiddleware.Middleware
 {
-    public class SimpleMiddleware : IMiddleware
+    public class SimpleMiddleware2 : IMiddleware
     {
         public async Task OnTurn(ITurnContext context, MiddlewareSet.NextDelegate next)
         {
-            await context.SendActivity($"Middleware running before, ActivityType:{context.Activity.Type} ");
+            await context.SendActivity($"[SimpleMiddleware2] {context.Activity.Type}/OnTurn/Before");
 
-            if (context.Activity.Type == ActivityTypes.Message && context.Activity.Text == "secret password") {
+
+            if (context.Activity.Type == ActivityTypes.Message && context.Activity.Text == "secret password")
+            {
                 // calling next() is totally optional. if the middleware does not call next then the
                 // next middleware in the pipeline will not be called, AND the bot will not receive the message.
                 //
@@ -21,7 +23,7 @@ namespace demo3mysimplemiddleware.Middleware
                 await next();
             }
 
-            await context.SendActivity($"Middleware running after, ActivityType:{context.Activity.Type} ");
+            await context.SendActivity($"[SimpleMiddleware1] {context.Activity.Type}/OnTurn/After");
         }
     }
 }

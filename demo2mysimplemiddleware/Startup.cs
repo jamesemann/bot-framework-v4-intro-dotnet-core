@@ -1,5 +1,5 @@
-﻿using demo3mysimplemiddleware.Bots;
-using demo3mysimplemiddleware.Middleware;
+﻿using demo2mysimplemiddleware.Bots;
+using demo2mysimplemiddleware.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder.BotFramework;
@@ -34,7 +34,8 @@ public class Startup
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
 
-            options.Middleware.Add(new SimpleMiddleware());
+            options.Middleware.Add(new SimpleMiddleware1());
+            options.Middleware.Add(new SimpleMiddleware2());
         });
 
 
