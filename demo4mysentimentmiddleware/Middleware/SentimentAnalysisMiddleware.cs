@@ -36,8 +36,7 @@ namespace demo4mysentimentmiddleware.Middleware
                 };
                 var sentiment = (await client.SentimentAsync(input)).Documents.SingleOrDefault(x => x.Id == documentBatchId).Score.Value;
 
-                var state = context.GetConversationState<SentimentAnalysisState>();
-                state.Sentiment = sentiment;
+                context.Services.Add<SentimentAnalyisResult>(new SentimentAnalyisResult() { Sentiment = sentiment });                
             }
 
             await next();
@@ -60,7 +59,7 @@ namespace demo4mysentimentmiddleware.Middleware
         }
     }
 
-    public class SentimentAnalysisState
+    public class SentimentAnalyisResult
     {
         public double Sentiment { get; set; }
     }

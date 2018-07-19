@@ -37,7 +37,7 @@ public class Startup
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
 
-            options.Middleware.Add(new ConversationState<SentimentAnalysisState>(new MemoryStorage()));
+            options.Middleware.Add(new ConversationState<SentimentAnalyisResult>(new MemoryStorage()));
             
             // provide the API key and the endpoint URL
             // both of these are accessible in the azure portal. Endpoint URL looks like "https://uksouth.api.cognitive.microsoft.com/text/analytics/v2.0"

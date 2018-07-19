@@ -13,9 +13,9 @@ namespace demo4mysentimentmiddleware.Bots
         {
             if (turnContext.Activity.Type == ActivityTypes.Message)
             {
-                var state = turnContext.GetConversationState<SentimentAnalysisState>();
+                var sentimentAnalysisResult = turnContext.Services.Get<SentimentAnalyisResult>();
 
-                await turnContext.SendActivity($"You said {turnContext.Activity.Text}, the sentiment according to the middleware is {state.Sentiment}");
+                await turnContext.SendActivity($"You said {turnContext.Activity.Text}, the sentiment according to the middleware is {sentimentAnalysisResult.Sentiment}");
             }
         }
     }
