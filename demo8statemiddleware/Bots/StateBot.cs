@@ -1,5 +1,6 @@
 ﻿using Microsoft.Bot;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Schema;
 using System.Threading.Tasks;
 
@@ -11,7 +12,8 @@ namespace demo8statemiddleware.Bots
         {
             if (turnContext.Activity.Type == ActivityTypes.Message)
             {
-                await turnContext.SendActivity($"You said {turnContext.Activity.Text}");
+                var state = turnContext.GetConversationState<DemoState>();
+                await turnContext.SendActivity($"You said {turnContext.Activity.Text}, and you have made {++state.Counter} requests.");
             }
         }
     }

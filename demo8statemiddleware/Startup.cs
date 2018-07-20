@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using demo7dialogs.Bots;
 using demo8statemiddleware.Bots;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +34,7 @@ public class Startup
         services.AddBot<StateBot>(options =>
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
+            options.Middleware.Add(new ConversationState<DemoState>(new MemoryStorage()));
         });
     }
 
