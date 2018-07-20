@@ -1,35 +1,35 @@
-﻿using Microsoft.Bot;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using demo7dialogs.Dialogs;
+using Microsoft.Bot;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace demo7dialogs.Bots
 {
     public class SimpleBotComponents : IBot
     {
-        private DialogSet _dialogs;
+        private readonly DialogSet dialogs;
 
         public SimpleBotComponents()
         {
-            this._dialogs = new DialogSet();
-            _dialogs.Add("mainDialog", MainDialog.Instance);
+            // compose dialogs
+            dialogs = new DialogSet();
+            dialogs.Add("mainDialog", MainDialog.Instance);
         }
 
-        public async Task OnTurn(ITurnContext context)
+        public async Task OnTurn(ITurnContext turnContext)
         {
-            if (context.Activity.Type == ActivityTypes.Message)
+            if (turnContext.Activity.Type == ActivityTypes.Message)
             {
-                var state = context.GetConversationState<Dictionary<string, object>>();
-                var dialogCtx = _dialogs.CreateContext(context, state);
+                var state = turnContext.GetConversationState<Dictionary<string, object>>();
+                var dialogCtx = dialogs.CreateContext(turnContext, state);
 
                 await dialogCtx.Continue();
-                if (!context.Responded)
+                if (!turnContext.Responded)
                 {
-                    // call next dialog#
                     await dialogCtx.Begin("mainDialog");
                 }
             }

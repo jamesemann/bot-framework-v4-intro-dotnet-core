@@ -1,4 +1,5 @@
-﻿using demo7dialogs.Bots;
+﻿using System.Collections.Generic;
+using demo7dialogs.Bots;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder.BotFramework;
@@ -6,7 +7,6 @@ using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 
 public class Startup
 {
@@ -18,7 +18,7 @@ public class Startup
     }
 
     // Track the root path so that it can be used to setup the app configuration
-    public string ContentRootPath { get; private set; }
+    public string ContentRootPath { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -35,7 +35,6 @@ public class Startup
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
             options.Middleware.Add(new ConversationState<Dictionary<string, object>>(new MemoryStorage()));
-            //options.Middleware.Add(new ConversationState<MakePaymentDialogState>(new MemoryStorage()));
         });
     }
 
