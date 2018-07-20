@@ -31,7 +31,7 @@ public class Startup
         services.AddSingleton(configuration);
 
         // Add your SimpleBot to your application
-        services.AddBot<SimpleBot>(options =>
+        services.AddBot<SimpleBotComponents>(options =>
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
             options.Middleware.Add(new ConversationState<Dictionary<string, object>>(new MemoryStorage()));
