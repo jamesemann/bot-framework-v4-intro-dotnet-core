@@ -40,10 +40,4 @@ namespace demo7dialogs.Bots
             Dialogs.Add("numberPrompt", new NumberPrompt<int>(Culture.English));
         }
     }
-
-    public class MakePaymentDialogState
-    {
-        public int Amount { get; set; }
-        public string Recipient { get; set; }
-    }
 }
