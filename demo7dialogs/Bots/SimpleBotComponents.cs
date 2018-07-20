@@ -68,7 +68,14 @@ namespace demo7dialogs.Bots
                     await dc.Begin(MakePaymentDialog.Id);
                 }
             }
-            });
+            ,
+                async (dc, args, next) =>
+                {
+                    // Show the main menu again.
+                    await dc.Replace(Id);
+                }
+            }
+            );
 
             // Add our child dialogs.
             this.Dialogs.Add(MakePaymentDialog.Id, MakePaymentDialog.Instance);
@@ -106,22 +113,28 @@ namespace demo7dialogs.Bots
             {
                 async (dc, args, next) =>
                 {
-                    await dc.Prompt("choicePrompt", $"Which account?",
+                    await dc.Prompt("choicePrompt", $"[CheckBalanceDialog] Which account?",
                         new ChoicePromptOptions
                         {
-                            Choices = new [] { new Choice() { Value = "Current account" }, new Choice() { Value = "Savings account" } }.ToList()
+                            Choices = new [] { new Choice() { Value = "Current" }, new Choice() { Value = "Savings" } }.ToList()
                         });
                 },
                 async (dc, args, next) =>
                 {
                     var response = (args["Value"] as FoundChoice).Value;
 
-                    await dc.Context.SendActivity($"{response}");
-
-                    await dc.End();
+                    if (response == "Current"){
+                         await dc.Begin(CheckCurrentAccountBalanceDialog.Id);
+                        }
+                        else if (response == "Savings")
+                        {
+                            await dc.Begin(CheckSavingsAccountBalanceDialog.Id);
+                        }
                 }
             });
-
+            // Add our child dialogs.
+            this.Dialogs.Add(CheckSavingsAccountBalanceDialog.Id, CheckSavingsAccountBalanceDialog.Instance);
+            this.Dialogs.Add(CheckCurrentAccountBalanceDialog.Id, CheckCurrentAccountBalanceDialog.Instance);
 
             // Define the prompts used in this conversation flow.
             this.Dialogs.Add("choicePrompt", new ChoicePrompt(Culture.English));
@@ -134,6 +147,36 @@ namespace demo7dialogs.Bots
         public static CheckCurrentAccountBalanceDialog Instance { get; } = new CheckCurrentAccountBalanceDialog();
         public CheckCurrentAccountBalanceDialog() : base(Id)
         {
+            this.Dialogs.Add(Id, new WaterfallStep[]
+{
+                async (dc, args, next) =>
+                {
+                    await dc.Context.SendActivity($"[CheckCurrentAccountBalanceDialog] Your current account balance is £2000");
+                    //await dc.Continue();
+                    await dc.End();
+                    //..await dc.cpm();
+                }
+});
+        }
+    }
+
+    public class CheckSavingsAccountBalanceDialog : DialogContainer
+    {
+        public static string Id { get { return "checkSavingsAccountBalanceDialog"; } }
+        public static CheckSavingsAccountBalanceDialog Instance { get; } = new CheckSavingsAccountBalanceDialog();
+        public CheckSavingsAccountBalanceDialog() : base(Id)
+        {
+            this.Dialogs.Add(Id, new WaterfallStep[]
+{
+                async (dc, args, next) =>
+                {
+                    await dc.Context.SendActivity($"[CheckCurrentAccountBalanceDialog] Your savings account balance is £5000");
+            //        await dc.Replace(MainDialog.Id);
+                    await dc.End();
+                }
+});
+
+
         }
     }
 }
