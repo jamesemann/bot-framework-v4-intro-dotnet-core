@@ -35,6 +35,7 @@ public class Startup
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
             options.Middleware.Add(new ConversationState<Dictionary<string, object>>(new MemoryStorage()));
+            //options.Middleware.Add(new ConversationState<MakePaymentDialogState>(new MemoryStorage()));
         });
     }
 
