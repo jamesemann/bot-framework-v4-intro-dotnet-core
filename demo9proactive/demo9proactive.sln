@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo9proactive", "demo9proactive.csproj", "{915FE6CD-F3FA-471B-BD87-B64C38449A4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{239E4C9B-ED8F-45A5-996C-9FBB7A8F9A0B}"
+	ProjectSection(SolutionItems) = preProject
+		CURL.txt = CURL.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{915FE6CD-F3FA-471B-BD87-B64C38449A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{915FE6CD-F3FA-471B-BD87-B64C38449A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{915FE6CD-F3FA-471B-BD87-B64C38449A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{915FE6CD-F3FA-471B-BD87-B64C38449A4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4EA84C13-43A5-4EEE-89C5-79E11384D98B}
+	EndGlobalSection
+EndGlobal

@@ -1,9 +1,7 @@
 ﻿using Microsoft.Bot;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+//using Microsoft.Bot.Builder.Core.Extensions;
 using System.Threading.Tasks;
 
 namespace demo1.Bots
