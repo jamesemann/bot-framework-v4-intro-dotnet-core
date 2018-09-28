@@ -1,38 +1,38 @@
-﻿using Microsoft.Bot;
-using Microsoft.Bot.Builder;
-using Microsoft.Bot.Schema;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Core.Extensions;
-using static Microsoft.Bot.Builder.Prompts.DateTimeResult;
-using Microsoft.Recognizers.Text;
-using Microsoft.Bot.Builder.Prompts.Choices;
+using Microsoft.Bot.Builder.Dialogs.Choices;
+using Microsoft.Bot.Schema;
 
 namespace demo10prompts.Bots
 {
     public class SimpleBot : IBot
     {
-        private DialogSet dialogs;
+        private readonly DialogSet dialogs;
 
-        public SimpleBot()
+        public SimpleBot(BotAccessors botAccessors)
         {
-            dialogs = new DialogSet();
-            dialogs.Add("textPrompt", new TextPrompt());
-            dialogs.Add("choicePrompt", new ChoicePrompt(Culture.English));
-            dialogs.Add("confirmPrompt", new ConfirmPrompt(Culture.English));
-            dialogs.Add("dateTimePrompt", new DateTimePrompt(Culture.English));
-            dialogs.Add("attachmentPrompt", new AttachmentPrompt());
-            dialogs.Add("numberPrompt", new NumberPrompt<int>(Culture.English));
-            dialogs.Add("greetings", new WaterfallStep[]
-            {async (dc, args, next) =>
+            var dialogState = botAccessors.DialogStateAccessor; 
+
+            dialogs = new DialogSet(dialogState);
+            dialogs.Add(new TextPrompt("textPrompt"));
+            dialogs.Add(new ChoicePrompt("choicePrompt"));
+            dialogs.Add(new ConfirmPrompt("confirmPrompt"));
+            dialogs.Add(new DateTimePrompt("dateTimePrompt"));
+            dialogs.Add(new AttachmentPrompt("attachmentPrompt"));
+            dialogs.Add(new NumberPrompt<int>("numberPrompt"));
+            dialogs.Add(new WaterfallDialog("greetings", new WaterfallStep[]
+            {
+                async (stepContext, cancellationToken) =>
                 {
-                    await dc.Prompt("choicePrompt","Which prompt would you like to test :-)",
-                        new ChoicePromptOptions
+                    return await stepContext.PromptAsync("choicePrompt",
+                        new PromptOptions
                         {
-                            Choices = new[] {
+                            Prompt = stepContext.Context.Activity.CreateReply("Which prompt would you like to test :-)"),
+                            Choices = new[]
+                            {
                                 new Choice {Value = "dateTimePrompt"},
                                 new Choice {Value = "textPrompt"},
                                 new Choice {Value = "confirmPrompt"},
@@ -41,35 +41,43 @@ namespace demo10prompts.Bots
                             }.ToList()
                         });
                 },
-                async (dc, args, next) =>
+                async (stepContext, cancellationToken) =>
                 {
-                    var choice = args["Value"] as FoundChoice;
+                    var choice = stepContext.Result as FoundChoice;
 
-                    await dc.Prompt(choice.Value, $"Please provide a response");
+                    return await stepContext.PromptAsync(choice.Value,
+                        new PromptOptions
+                        {
+                            Prompt = stepContext.Context.Activity.CreateReply($"Please provide a response")
+                        });
                 },
-                async(dc, args, next) =>
+                async (stepContext, cancellationToken) =>
                 {
-                    //if (args["Resolution"] is List<DateTimeResolution> resolutions && resolutions.Count > 0 && resolutions.FirstOrDefault().Value is string resolution) {
-                    //    var parsedResolution = DateTime.Parse(resolution);
-                    //    await dc.Context.SendActivity($"You said {parsedResolution.ToShortDateString()}");
-                    //}
-                    await dc.End();
+                    await stepContext.Context.SendActivityAsync($"Handle response data here = {stepContext.Result.ToString()}");
+                    return await stepContext.EndDialogAsync();
                 }
-            });
+            }));
+            BotAccessors = botAccessors;
         }
-        public async Task OnTurn(ITurnContext turnContext)
+
+        public BotAccessors BotAccessors { get; }
+
+        public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (turnContext.Activity.Type == ActivityTypes.Message)
             {
-                var state = turnContext.GetConversationState<Dictionary<string,object>>();
+                var dialogCtx = await dialogs.CreateContextAsync(turnContext, cancellationToken);
 
-                var dialogCtx = dialogs.CreateContext(turnContext, state);
-
-                await dialogCtx.Continue();
-                if (!turnContext.Responded)
+                if (dialogCtx.ActiveDialog == null)
                 {
-                    await dialogCtx.Begin("greetings");
+                    await dialogCtx.BeginDialogAsync("greetings", cancellationToken);
                 }
+                else
+                {
+                    await dialogCtx.ContinueDialogAsync(cancellationToken);
+                }
+
+                await BotAccessors.ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
             }
         }
     }

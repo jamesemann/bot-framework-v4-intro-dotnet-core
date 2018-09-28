@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Bot.Builder.Ai.LUIS;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
-using Microsoft.Cognitive.LUIS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,6 +33,7 @@ namespace dispatch
                 options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
 
                 var dispatcherConfiguration = Config.GetDispatchConfiguration(this.Configuration).Dispatcher;
+                
                 var luisModel = new LuisModel(dispatcherConfiguration.Id, dispatcherConfiguration.Key, dispatcherConfiguration.Url);
                 var luisOptions = new LuisRequest { Verbose = true };
 
