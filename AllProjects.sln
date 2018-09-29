@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo1", "demo1\demo1.csproj", "{16D86D5D-80E9-4572-BA69-DD83DA32192A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo1helloworld", "demo1\demo1helloworld.csproj", "{16D86D5D-80E9-4572-BA69-DD83DA32192A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo2mysimplemiddleware", "demo2mysimplemiddleware\demo2mysimplemiddleware.csproj", "{AA5674DA-D43D-4AC3-ABF8-30370A42D079}"
 EndProject
@@ -25,9 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo9proactive", "demo9proa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo10adaptivecards", "demo10adaptivecards\demo10adaptivecards.csproj", "{D96DEFC1-2599-4837-9A78-4E1896E3399D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo10prompts", "demo11prompts\demo10prompts.csproj", "{FAEB2DA9-5277-4335-8D89-CD786EB2594F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo11prompts", "demo11prompts\demo11prompts.csproj", "{FAEB2DA9-5277-4335-8D89-CD786EB2594F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dispatch", "demo12dispatch\dispatch.csproj", "{5A4F1262-9F9A-4187-BADD-1D45D76ED4D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo12dispatch", "demo12dispatch\demo12dispatch.csproj", "{5A4F1262-9F9A-4187-BADD-1D45D76ED4D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
