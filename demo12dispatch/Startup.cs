@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Bot.Builder.AI.Luis;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,6 @@ namespace dispatch
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Env.ContentRootPath)
                 .AddJsonFile("appsettings.json");
@@ -28,16 +28,15 @@ namespace dispatch
             var configuration = configurationBuilder
                 .Build();
 
+            services.AddSingleton(sp =>
+            {
+                var dispatcherConfiguration = Config.GetDispatchConfiguration(this.Configuration).Dispatcher;
+
+                return new LuisRecognizer(new LuisApplication(dispatcherConfiguration.Id, dispatcherConfiguration.Key, dispatcherConfiguration.Url));
+            });
 
             services.AddBot<Bot>((options) => {
                 options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
-
-                var dispatcherConfiguration = Config.GetDispatchConfiguration(this.Configuration).Dispatcher;
-                
-                var luisModel = new LuisModel(dispatcherConfiguration.Id, dispatcherConfiguration.Key, dispatcherConfiguration.Url);
-                var luisOptions = new LuisRequest { Verbose = true };
-
-                options.Middleware.Add(new LuisRecognizerMiddleware(luisModel, luisOptions: luisOptions));
             });
 
             services.AddMvc();
