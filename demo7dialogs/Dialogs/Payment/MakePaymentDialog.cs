@@ -1,45 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Recognizers.Text;
 
 namespace demo7dialogs.Dialogs.Payment
 {
-    public class MakePaymentDialog : DialogContainer
+    public class MakePaymentDialog : WaterfallDialog
     {
-        public MakePaymentDialog() : base(Id)
+        public MakePaymentDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
         {
-            Dialogs.Add(Id, new WaterfallStep[]
+            AddStep(async (stepContext, cancellationToken) =>
             {
-                async (dc, args, next) => { await dc.Prompt("textPrompt", "Who would you like to pay?"); },
-                async (dc, args, next) =>
-                {
-                    var state = dc.Context.GetConversationState<Dictionary<string, object>>();
-                    state["Recipient"] = (string) args["Value"];
-                    await dc.Prompt("numberPrompt",
-                        $"{state["Recipient"]}, got it{Environment.NewLine}How much should I pay?", new PromptOptions
-                        {
-                            RetryPromptString = "Sorry, please give me a number."
-                        });
-                },
-                async (dc, args, next) =>
-                {
-                    var state = dc.Context.GetConversationState<Dictionary<string, object>>();
-                    state["Amount"] = (int) args["Value"];
-                    await dc.Context.SendActivity(
-                        dc.Context.Activity.CreateReply(
-                            $"Thank you, I've paid {state["Amount"]} to {state["Recipient"]} 💸"));
-                    await dc.End();
-                }
+                return await stepContext.PromptAsync("textPrompt",
+                    new PromptOptions
+                    {
+                        Prompt = stepContext.Context.Activity.CreateReply("Who would you like to pay?")
+                    });
             });
 
-            // add the prompts
-            Dialogs.Add("textPrompt", new TextPrompt());
-            Dialogs.Add("numberPrompt", new NumberPrompt<int>(Culture.English));
+            AddStep(async (stepContext, cancellationToken) =>
+            {
+                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                state.Recipient = stepContext.Result.ToString();
+
+                return await stepContext.PromptAsync("numberPrompt",
+                    new PromptOptions
+                    {
+                        Prompt = stepContext.Context.Activity.CreateReply($"{state.Recipient}, got it{Environment.NewLine}How much should I pay?"),
+                        RetryPrompt = stepContext.Context.Activity.CreateReply("Sorry, please give me a number.")
+                    });
+            });
+
+            AddStep(async (stepContext, cancellationToken) =>
+            {
+                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                state.Amount = int.Parse(stepContext.Result.ToString());
+
+                await stepContext.Context.SendActivityAsync($"Thank you, I've paid {state.Amount} to {state.Recipient} 💸");
+                return await stepContext.EndDialogAsync();
+            });
         }
 
         public static string Id => "makePaymentDialog";
-        public static MakePaymentDialog Instance { get; } = new MakePaymentDialog();
+        public static MakePaymentDialog Instance { get; } = new MakePaymentDialog(Id);
     }
 }

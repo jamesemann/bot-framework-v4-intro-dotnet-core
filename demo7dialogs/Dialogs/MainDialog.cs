@@ -1,54 +1,48 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using demo7dialogs.Dialogs.Balance;
 using demo7dialogs.Dialogs.Payment;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Prompts.Choices;
+using Microsoft.Bot.Builder.Dialogs.Choices;
 
 namespace demo7dialogs.Dialogs
 {
-    public class MainDialog : DialogContainer
+    public class MainDialog : WaterfallDialog
     {
-        private MainDialog() : base(Id)
+        public MainDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
         {
-            Dialogs.Add(DialogId, new WaterfallStep[]
+            AddStep(async (stepContext, cancellationToken) =>
+            {
+                return await stepContext.PromptAsync("choicePrompt",
+                    new PromptOptions
+                    {
+                        Prompt = stepContext.Context.Activity.CreateReply("[MainDialog] I'm banking 🤖{Environment.NewLine}Would you like to check balance or make payment?"),
+                        Choices = new[] {new Choice {Value = "Check balance"}, new Choice {Value = "Make payment"}}.ToList()
+                    });
+            });
+            AddStep(async (stepContext, cancellationToken) =>
+            {
+                var response = (stepContext.Result as FoundChoice)?.Value;
+
+                if (response == "Check balance")
                 {
-                    async (dc, args, next) =>
-                    {
-                        await dc.Prompt("choicePrompt", $"[MainDialog] I'm banking 🤖{Environment.NewLine}Would you like to check balance or make payment?",
-                            new ChoicePromptOptions
-                            {
-                                Choices = new[] {new Choice {Value = "Check balance"}, new Choice {Value = "Make payment"}}.ToList()
-                            });
-                    },
-
-                    async (dc, args, next) =>
-                    {
-                        var response = (args["Value"] as FoundChoice)?.Value;
-                        if (response == "Check balance")
-                        {
-                            await dc.Begin(CheckBalanceDialog.Id);
-                        }
-                        else if (response == "Make payment")
-                        {
-                            await dc.Begin(MakePaymentDialog.Id);
-                        }
-                    },
-                    async (dc, args, next) =>
-                    {
-                        await dc.Replace(Id);
-                    }
+                    return await stepContext.BeginDialogAsync(CheckBalanceDialog.Id);
                 }
-            );
 
-            // add the child dialogs and prompts
-            Dialogs.Add(MakePaymentDialog.Id, MakePaymentDialog.Instance);
-            Dialogs.Add(CheckBalanceDialog.Id, CheckBalanceDialog.Instance);
-            Dialogs.Add("choicePrompt", new ChoicePrompt("en"));
+                if (response == "Make payment")
+                {
+                    return await stepContext.BeginDialogAsync(MakePaymentDialog.Id);
+                }
+
+                return await stepContext.NextAsync();
+            });
+
+            AddStep(async (stepContext, cancellationToken) => { return await stepContext.ReplaceDialogAsync(Id); });
         }
+
 
         public static string Id => "mainDialog";
 
-        public static MainDialog Instance { get; } = new MainDialog();
+        public static MainDialog Instance { get; } = new MainDialog(Id);
     }
 }

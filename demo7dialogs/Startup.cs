@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using demo7dialogs;
 using demo7dialogs.Bots;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
-using Microsoft.Bot.Builder.Core.Extensions;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Integration;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 public class Startup
 {
@@ -30,11 +34,26 @@ public class Startup
         var configuration = builder.Build();
         services.AddSingleton(configuration);
 
-        // Add your SimpleBot to your application
-        services.AddBot<SimpleBotComponents>(options =>
+        services.AddBot<BankingBot>(options =>
         {
+            var conversationState = new ConversationState(new MemoryStorage());
+            options.State.Add(conversationState);
+
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
-            options.Middleware.Add(new ConversationState<Dictionary<string, object>>(new MemoryStorage()));
+        });
+
+        services.AddSingleton(serviceProvider =>
+        {
+            var options = serviceProvider.GetRequiredService<IOptions<BotFrameworkOptions>>().Value;
+            var conversationState = options.State.OfType<ConversationState>().FirstOrDefault();
+
+            var accessors = new BotAccessors(conversationState)
+            {
+                DialogStateAccessor = conversationState.CreateProperty<DialogState>(BotAccessors.DialogStateAccessorName),
+                BankingBotStateStateAccessor = conversationState.CreateProperty<BankingBotState>(BotAccessors.BankingBotStateAccessorName)
+            };
+
+            return accessors;
         });
     }
 
