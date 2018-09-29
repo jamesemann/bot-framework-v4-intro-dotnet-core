@@ -1,12 +1,12 @@
 ﻿using demo5luismiddleware.Bots;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Bot.Builder.Ai.LUIS;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Microsoft.Bot.Builder.AI.Luis;
 
 public class Startup
 {
@@ -30,22 +30,32 @@ public class Startup
         var configuration = builder.Build();
         services.AddSingleton(configuration);
 
+        services.AddSingleton(sp =>
+        {
+            // get these values from luis.ai
+            // i've left the endpoint in so you have an example of an url that works
+            // because all luis client libs seem to vary 
+            var luisApp = new LuisApplication(
+                applicationId: "",
+                endpointKey: "", 
+                endpoint:"https://westus.api.cognitive.microsoft.com");
+
+            var luisPredictionOptions = new LuisPredictionOptions
+            {
+                IncludeAllIntents = true,
+            };
+
+            return new LuisRecognizer(
+                application: luisApp,
+                predictionOptions: luisPredictionOptions,
+                includeApiResults: true);
+        });
 
         // Add your SimpleBot to your application
         services.AddBot<SimpleBot>(options =>
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
-
-            // Add LUIS recognizer as middleware
-            // fill in these values
-            options.Middleware.Add(
-                new LuisRecognizerMiddleware(
-                    new LuisModel(
-                        "",
-                        "",
-                        new Uri(""))));
         });
-
 
     }
 
