@@ -1,7 +1,6 @@
 ﻿using demo3qnamakermiddleware.Bots;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Bot.Builder.Ai.QnA;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
@@ -33,15 +32,6 @@ public class Startup
         services.AddBot<SimpleBot>(options =>
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
-
-            options.Middleware.Add(new QnAMakerMiddleware(new QnAMakerEndpoint
-            {
-                // get these details from qnamaker.ai
-                // https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-qna?view=azure-bot-service-4.0&tabs=cs
-                KnowledgeBaseId = "",
-                Host = "",
-                EndpointKey = ""
-            }));
         });
 
 
