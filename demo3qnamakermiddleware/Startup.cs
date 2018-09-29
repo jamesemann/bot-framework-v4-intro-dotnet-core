@@ -1,6 +1,7 @@
 ﻿using demo3qnamakermiddleware.Bots;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,20 @@ public class Startup
             .AddEnvironmentVariables();
         var configuration = builder.Build();
         services.AddSingleton(configuration);
+
+        services.AddSingleton(sp =>
+        {
+            var qnaService = new QnAMaker(new QnAMakerEndpoint()
+            {
+                // get these details from qnamaker.ai
+                // https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-qna?view=azure-bot-service-4.0&tabs=cs
+                KnowledgeBaseId = "",
+                Host = "",
+                EndpointKey = ""
+            });
+
+            return qnaService;
+        });
 
         // Add your SimpleBot to your application
         services.AddBot<SimpleBot>(options =>

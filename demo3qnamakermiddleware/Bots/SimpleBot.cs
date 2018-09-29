@@ -12,20 +12,18 @@ namespace demo3qnamakermiddleware.Bots
 {
     public class SimpleBot : IBot
     {
+        public SimpleBot(QnAMaker qnAMaker)
+        {
+            QnAMaker = qnAMaker;
+        }
+
+        public QnAMaker QnAMaker { get; }
+
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!turnContext.Responded && turnContext.Activity.Type == ActivityTypes.Message)
             {
-                var qnaService = new QnAMaker(new QnAMakerEndpoint()
-                {
-                    // get these details from qnamaker.ai
-                    // https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-qna?view=azure-bot-service-4.0&tabs=cs
-                    KnowledgeBaseId = "",
-                    Host = "",
-                    EndpointKey = ""
-                });
-
-                var result = await qnaService.GetAnswersAsync(turnContext);
+                var result = await QnAMaker.GetAnswersAsync(turnContext);
 
                 if (result != null && result.Length > 0)
                 {
