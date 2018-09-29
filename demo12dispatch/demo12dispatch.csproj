@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>dispatch</RootNamespace>
+    <AssemblyName>dispatch</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,8 +12,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
-    <PackageReference Include="Microsoft.Bot.Builder.Dialogs" Version="4.0.1-preview" />
-    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.0.1-preview" />
+    <PackageReference Include="Microsoft.Bot.Builder.Ai.LUIS" Version="4.0.7" />
+    <PackageReference Include="Microsoft.Bot.Builder.Ai.QnA" Version="4.0.7" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.0.7" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,19 +1,25 @@
-﻿using Microsoft.Bot;
-using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Core.Extensions;
-using Microsoft.Bot.Schema;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Bot.Builder;
+using Microsoft.Bot.Schema;
 
 namespace demo8statemiddleware.Bots
 {
     public class StateBot : IBot
     {
-        public async Task OnTurn(ITurnContext turnContext)
+        public StateBot(BotAccessors botAccessors)
+        {
+            BotAccessors = botAccessors;
+        }
+
+        public BotAccessors BotAccessors { get; }
+
+        public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (turnContext.Activity.Type == ActivityTypes.Message)
             {
-                var state = turnContext.GetConversationState<DemoState>();
-                await turnContext.SendActivity($"You said {turnContext.Activity.Text}, and you have made {++state.Counter} requests.");
+                var state = await BotAccessors.DemoStateAccessor.GetAsync(turnContext, () => new DemoState(), cancellationToken:cancellationToken);
+                await turnContext.SendActivityAsync($"You said {turnContext.Activity.Text}, and you have made {++state.Counter} requests.");
             }
         }
     }

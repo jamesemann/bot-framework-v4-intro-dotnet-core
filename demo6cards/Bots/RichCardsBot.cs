@@ -4,12 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot;
 using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Prompts.Choices;
 using Microsoft.Bot.Schema;
 using Microsoft.Recognizers.Text;
 using Newtonsoft.Json;
@@ -22,37 +21,36 @@ namespace demo6cards
         {
         }
 
-        public async Task OnTurn(ITurnContext context)
+        public async Task OnTurnAsync(ITurnContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (context.Activity.Type == ActivityTypes.Message)
             {
-
                 var activity = context.Activity;
                 switch (activity.Text)
                 {
                     case "Adaptive card":
-                        await context.SendActivity(CreateResponse(activity, CreateAdaptiveCardAttachment()));
+                        await context.SendActivityAsync(CreateResponse(activity, CreateAdaptiveCardAttachment()));
                         break;
                     case "Animation card":
-                        await context.SendActivity(CreateResponse(activity, CreateAnimationCardAttachment()));
+                        await context.SendActivityAsync(CreateResponse(activity, CreateAnimationCardAttachment()));
                         break;
                     case "Audio card":
-                        await context.SendActivity(CreateResponse(activity, CreateAudioCardAttachment()));
+                        await context.SendActivityAsync(CreateResponse(activity, CreateAudioCardAttachment()));
                         break;
                     case "Hero card":
-                        await context.SendActivity(CreateResponse(activity, CreateHeroCardAttachment()));
+                        await context.SendActivityAsync(CreateResponse(activity, CreateHeroCardAttachment()));
                         break;
                     case "Receipt card":
-                        await context.SendActivity(CreateResponse(activity, CreateReceiptCardAttachment()));
+                        await context.SendActivityAsync(CreateResponse(activity, CreateReceiptCardAttachment()));
                         break;
                     case "Signin card":
-                        await context.SendActivity(CreateResponse(activity, CreateSignInCardAttachment()));
+                        await context.SendActivityAsync(CreateResponse(activity, CreateSignInCardAttachment()));
                         break;
                     case "Thumbnail card":
-                        await context.SendActivity(CreateResponse(activity, CreateThumbnailCardAttachment()));
+                        await context.SendActivityAsync(CreateResponse(activity, CreateThumbnailCardAttachment()));
                         break;
                     case "Video card":
-                        await context.SendActivity(CreateResponse(activity, CreateVideoCardAttacment()));
+                        await context.SendActivityAsync(CreateResponse(activity, CreateVideoCardAttacment()));
                         break;
                     default: 
                         activity.Text = "";
@@ -64,7 +62,7 @@ namespace demo6cards
                         activity.Text += $"Signin card{Environment.NewLine}";
                         activity.Text += $"Thumbnail card{Environment.NewLine}";
                         activity.Text += $"Video card{Environment.NewLine}";
-                        await context.SendActivity(activity);
+                        await context.SendActivityAsync(activity);
 
                         break;
                 }

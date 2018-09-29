@@ -22,7 +22,7 @@ namespace demo4sentiment.bot.Middleware
             
         }
 
-        public async Task OnTurn(ITurnContext context, MiddlewareSet.NextDelegate next)
+        public async Task OnTurnAsync(ITurnContext context, NextDelegate next, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (context.Activity.Type == ActivityTypes.Message)
             {
@@ -32,11 +32,10 @@ namespace demo4sentiment.bot.Middleware
                 }
 
                 var predictedSentiment = model.Predict(new SentimentData() { SentimentText = context.Activity.Text });
-
-                context.Services.Add<SentimentPrediction>(new SentimentPrediction() { Sentiment = predictedSentiment.Sentiment });                
+                context.TurnState.Add("SentimentPrediction",new SentimentPrediction() { Sentiment = predictedSentiment.Sentiment });
             }
 
-            await next();
+            await next(cancellationToken);
         }
     }
 }

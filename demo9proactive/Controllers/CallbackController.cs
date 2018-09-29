@@ -42,8 +42,8 @@ namespace demo9proactive.Controllers
                 var resumeJson = System.IO.File.ReadAllText(filepath);
                 var resumeData = JsonConvert.DeserializeObject<ConversationReference>(resumeJson);
                 var client = new ConnectorClient(new Uri(resumeData.ServiceUrl));
-                var message1 =resumeData.GetPostToBotMessage().CreateReply($"This is a response to your enquiry reference {String.Format("{0:X}", resumeData.ActivityId.GetHashCode())}...");
-                var message2 = resumeData.GetPostToBotMessage().CreateReply($"{message.Text}");
+                var message1 =resumeData.GetContinuationActivity().CreateReply($"This is a response to your enquiry reference {String.Format("{0:X}", resumeData.ActivityId.GetHashCode())}...");
+                var message2 = resumeData.GetContinuationActivity().CreateReply($"{message.Text}");
                 await client.Conversations.ReplyToActivityAsync((Activity)message1);
                 await client.Conversations.ReplyToActivityAsync((Activity)message2);
                 return new HttpResponseMessage(System.Net.HttpStatusCode.OK);

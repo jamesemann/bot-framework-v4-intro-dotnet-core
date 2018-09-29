@@ -26,7 +26,7 @@ namespace dispatch
         {
             public string Id { get; set; }
             public string Key { get; set; }
-            public Uri Url { get; set; }
+            public string Url { get; set; }
 
         }
 
@@ -36,7 +36,7 @@ namespace dispatch
             public string Name{ get; set; }
             public string Id { get; set; }
             public string Key { get; set; }
-            public Uri Url { get; set; }
+            public string Url { get; set; }
             
             public enum ModelTypes
             {

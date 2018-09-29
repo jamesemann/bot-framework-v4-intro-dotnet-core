@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder.BotFramework;
-using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using Microsoft.Bot.Builder;
 
 public class Startup
 {
@@ -34,8 +34,6 @@ public class Startup
         // Add your SimpleBot to your application
         services.AddBot<RichCardsBot>(options =>
         {
-            var dataStore = new MemoryStorage();
-
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
         });
 

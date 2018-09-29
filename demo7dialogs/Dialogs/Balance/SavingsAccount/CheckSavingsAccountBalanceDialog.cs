@@ -1,22 +1,20 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using System.Collections.Generic;
+using Microsoft.Bot.Builder.Dialogs;
 
 namespace demo7dialogs.Dialogs.Balance.SavingsAccount
 {
-    public class CheckSavingsAccountBalanceDialog : DialogContainer
+    public class CheckSavingsAccountBalanceDialog : WaterfallDialog
     {
-        public CheckSavingsAccountBalanceDialog() : base(Id)
+        public CheckSavingsAccountBalanceDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
         {
-            Dialogs.Add(Id, new WaterfallStep[]
-            {
-                async (dc, args, next) =>
+            this.AddStep(async (stepContext, cancellationToken) =>
                 {
-                    await dc.Context.SendActivity($"[CheckCurrentAccountBalanceDialog] Your savings account balance is £5000");
-                    await dc.End();
-                }
-            });
+                    await stepContext.Context.SendActivityAsync($"Your savings balance is...");
+                    return await stepContext.EndDialogAsync();
+                });
         }
 
         public static string Id => "checkSavingsAccountBalanceDialog";
-        public static CheckSavingsAccountBalanceDialog Instance { get; } = new CheckSavingsAccountBalanceDialog();
+        public static CheckSavingsAccountBalanceDialog Instance { get; } = new CheckSavingsAccountBalanceDialog(Id);
     }
 }

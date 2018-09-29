@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 // https://adaptivecards.io/
 // https://adaptivecards.io/explorer/
@@ -16,24 +17,6 @@ namespace demo10adaptivecards
 {
     public class Bot : IBot
     {
-        public async Task OnTurn(ITurnContext turnContext)
-        {
-            // display result
-            if (turnContext.Activity.Value != null)
-            {
-                await turnContext.SendActivity(turnContext.Activity.Value.ToString());
-            }
-
-            // display adaptive card
-            if (turnContext.Activity.Type == ActivityTypes.Message)
-            {
-                var response = turnContext.Activity.CreateReply();
-                response.Attachments = new List<Attachment>() { CreateAdaptiveCardUsingJson() };
-
-                await turnContext.SendActivity(response);
-            }
-        }
-
         private Attachment CreateAdaptiveCardUsingSdk()
         {
             var card = new AdaptiveCard();
@@ -64,6 +47,24 @@ namespace demo10adaptivecards
                 ContentType = AdaptiveCard.ContentType,
                 Content = AdaptiveCard.FromJson(File.ReadAllText("adaptiveCard.json")).Card
             };
+        }
+
+        public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // display result
+            if (turnContext.Activity.Value != null)
+            {
+                await turnContext.SendActivityAsync(turnContext.Activity.Value.ToString());
+            }
+
+            // display adaptive card
+            if (turnContext.Activity.Type == ActivityTypes.Message)
+            {
+                var response = turnContext.Activity.CreateReply();
+                response.Attachments = new List<Attachment>() { CreateAdaptiveCardUsingJson() };
+
+                await turnContext.SendActivityAsync(response);
+            }
         }
     }
 }

@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using demo8statemiddleware;
 using demo8statemiddleware.Bots;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
-using Microsoft.Bot.Builder.Core.Extensions;
+using Microsoft.Bot.Builder.Integration;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 public class Startup
 {
@@ -27,6 +31,7 @@ public class Startup
             .SetBasePath(ContentRootPath)
             .AddJsonFile("appsettings.json")
             .AddEnvironmentVariables();
+
         var configuration = builder.Build();
         services.AddSingleton(configuration);
 
@@ -34,7 +39,21 @@ public class Startup
         services.AddBot<StateBot>(options =>
         {
             options.CredentialProvider = new ConfigurationCredentialProvider(configuration);
-            options.Middleware.Add(new ConversationState<DemoState>(new MemoryStorage()));
+            var conversationState = new ConversationState(new MemoryStorage());
+            options.State.Add(conversationState);
+        });
+
+        services.AddSingleton<BotAccessors>(serviceProvider =>
+        {
+            var options = serviceProvider.GetRequiredService<IOptions<BotFrameworkOptions>>().Value;
+            var conversationState = options.State.OfType<ConversationState>().FirstOrDefault();
+
+            var accessors = new BotAccessors(conversationState)
+            {
+                DemoStateAccessor = conversationState.CreateProperty<DemoState>(BotAccessors.DemoStateName),
+            };
+
+            return accessors;
         });
     }
 
